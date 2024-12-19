@@ -9,11 +9,11 @@ import UserCard from "./UserCard"
 
 
 
+
 const Feed = () => {
     const dispatch = useDispatch()
     const userFeed = useSelector(store => store.feed)
 
-    // if (!userFeed) return
     const getFeed = async () => {
         try {
             const res = await axios.get(BASE_URL + "user/feed", { withCredentials: true })
@@ -24,9 +24,14 @@ const Feed = () => {
         }
     }
 
+
+
     useEffect(() => {
         getFeed()
     }, [])
+    if (!userFeed) return
+
+    if (userFeed.length <= 0) return <h1 className="font-bold text-center text-3xl mt-28">No New User found</h1>
     return userFeed && (
         <div className=" w-full mb-20 my-10  ">
             <UserCard user={userFeed[0]} />

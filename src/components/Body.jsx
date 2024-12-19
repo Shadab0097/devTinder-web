@@ -11,6 +11,7 @@ const Body = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const loggedInUser = useSelector(store => store.user)
+
     const fetchUserData = async () => {
         if (loggedInUser) return
         try {

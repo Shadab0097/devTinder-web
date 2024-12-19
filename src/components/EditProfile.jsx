@@ -78,7 +78,8 @@ const EditProfile = ({ userProfile }) => {
                         </div>
                         <div className="sm:col-span-2">
                             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">About</label>
-                            <textarea className="textarea textarea-bordered w-full" placeholder="..." onChange={(e) => setAbout(e.target.value)}></textarea>
+
+                            <textarea value={about} className="textarea textarea-bordered w-full" placeholder="..." onChange={(e) => setAbout(e.target.value)}></textarea>
                         </div>
                     </div>
                     <p className="text-red-500">{error}</p>
