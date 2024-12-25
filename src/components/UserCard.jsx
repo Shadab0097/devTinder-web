@@ -30,7 +30,7 @@ const UserCard = ({ user }) => {
                 setShowToast(false)
                 toastTimeoutRef.current = null;
 
-            }, 2000)
+            }, 3000)
 
         } catch (err) {
             console.log(err.message)
@@ -52,19 +52,28 @@ const UserCard = ({ user }) => {
     return (
         <>
 
-            <div className="card card-compact bg-base-300 w-96 shadow-xl m-auto">
-                <figure className="px-10 pt-10">
+            <div className="card card-compact bg-base-300 w-96 shadow-xl m-auto ">
+                <figure className="">
                     <img
                         src={photoUrl}
-                        alt="Shoes"
-                        className="rounded-xl" />
+                        alt="photo"
+                        className="rounded-xl border-b-4 border-cyan-100 w-full h-72 object-cover hover:scale-105 transition-transform duration-300" />
                 </figure>
                 <div className="card-body items-center text-center">
-                    <h2 className="card-title">{firstName + ' ' + lastName}</h2>
-                    {age && gender && <p>{age + " " + gender}</p>}
+                    <h2 className="card-title text-2xl">{firstName[0].toUpperCase() + firstName.slice(1) + ' ' + lastName[0].toUpperCase() + lastName.slice(1)}</h2>
+                    {age && gender && <p className="text-l font-bold ">{age + " " + gender[0].toUpperCase() + gender.slice(1)}</p>}
 
                     <p className="break-words">{about}</p>
-                    <p className="break-words">{skills}</p>
+                    <div className="flex flex-wrap gap-1.5 mb-4">
+
+                        <span
+
+                            className="px-2.5 py-0.5 bg-pink-50 text-pink-700 rounded-full text-xs font-medium hover:bg-pink-100 transition-colors duration-200"
+                        >
+                            {skills}
+                        </span>
+
+                    </div>
 
                     {location.pathname === "/" && <div className="card-actions my-3">
                         <button className="btn btn-primary" onClick={() => { handleRequest("ignored", _id) }}>ignore</button>
@@ -76,7 +85,7 @@ const UserCard = ({ user }) => {
 
 
             {showToast && <div className="toast toast-top toast-center">
-                <div className="alert alert-success">
+                <div className={(notify === 'interested') ? "alert alert-success" : "alert alert-warning"}>
                     {notify === 'interested' ? <span>Send Interested Successfully</span> : <span>Request Ignored Successfully</span>}
                 </div>
             </div>}

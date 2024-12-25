@@ -6,6 +6,7 @@ import { BASE_URL } from "../utils/constant"
 import { useDispatch, useSelector } from "react-redux"
 import { addUser } from "../utils/userSlice"
 import { useEffect } from "react"
+import GetStarted from "./GetStarted"
 
 const Body = () => {
     const dispatch = useDispatch()
@@ -42,6 +43,7 @@ const Body = () => {
         <div>
 
             <NavBar />
+
             <Outlet />
             <Footer />
         </div>

@@ -8,6 +8,8 @@ import Feed from "./components/Feed"
 import Connections from "./components/Connections"
 import Requests from "./components/Requests"
 import ConnectionProfileView from "./components/ConnectionProfileView"
+import GetStarted from "./components/GetStarted"
+import ErrorPage from "./components/ErrorPage"
 
 function App() {
 
@@ -17,6 +19,7 @@ function App() {
       <Provider store={appStore}>
         <BrowserRouter basename="/">
           <Routes>
+
             <Route path="/" element={<Body />}>
               <Route path="/" element={<Feed />} />
               <Route path="/login" element={<Login />} />
@@ -25,9 +28,8 @@ function App() {
               <Route path="/requests" element={<Requests />} />
               <Route path="/connectionprofile" element={<ConnectionProfileView />} />
 
-
-
             </Route>
+            <Route path="*" element={<ErrorPage />} />
           </Routes>
         </BrowserRouter>
       </Provider>

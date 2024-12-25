@@ -38,13 +38,13 @@ const EditProfile = ({ userProfile }) => {
     }
 
     return userProfile && (
-        <div className="w-full">
+        <div className="w-full mt-12">
             <div className="flex  flex-wrap-reverse mb-20  ">
 
 
                 {/* <div className="bg-base-300 my-2 rounded-2xl mx-5 "> */}
-                <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16 m-auto bg-base-300 my-2 rounded-2xl shadow-xl  ">
-                    <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white flex justify-center">Edit Profile</h2>
+                <div className=" px-4 mx-auto max-w-2xl lg:py-16 m-auto bg-base-300 my-2 rounded-2xl shadow-xl  ">
+                    <h2 className=" my-2 pb-2 border-b-4  border-cyan-100  mb-12 text-2xl font-bold text-gray-900 dark:text-white flex justify-center">Edit Profile</h2>
 
                     <div className="grid gap-4 sm:grid-cols-2 sm:gap-6 ">
                         <div className="sm:col-span-1">

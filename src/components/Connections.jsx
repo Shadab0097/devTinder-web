@@ -1,15 +1,18 @@
 import axios from "axios"
 import { BASE_URL } from "../utils/constant"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { addConnections } from "../utils/connectionSlice"
 import { addView } from "../utils/connectionProfileViewSlice"
 import { Navigate, useNavigate } from "react-router-dom"
+import { FaComments, FaUserPlus } from "react-icons/fa"
 
 const Connections = () => {
     const dispatch = useDispatch()
     const connections = useSelector(store => store.connections)
     const navigate = useNavigate()
+
+
     const getConnections = async () => {
         try {
             const res = await axios.get(BASE_URL + "user/connections", { withCredentials: true })
@@ -37,6 +40,7 @@ const Connections = () => {
 
     }
 
+
     return (
 
 
@@ -49,34 +53,44 @@ const Connections = () => {
 
                     return (
 
-                        <div key={_id} className="mx-auto my-5 sm:max-w-2xl ">
-                            <div className="grid grid-cols-3 gap-3 bg-base-300 rounded--3xl rounded-r-3xl rounded-l-full overflow-hidden items-center ">
 
-                                <div className=" col-span-1 relative w-32 h-32 flex-shrink-0">
-                                    <img className="absolute left-0 top-0 w-full h-full rounded-full object-cover object-center transition duration-50" loading="lazy" src={photoUrl} />
+                        <div key={_id} className="container mx-auto px-4 py-8 relative ">
+                            <div className="max-w-4xl mx-auto bg-base-300  backdrop-blur-lg rounded-2xl overflow-hidden shadow-2xl">
+                                <div className="p-6 flex flex-col md:flex-row items-center gap-6">
+                                    <div className="relative">
+                                        <img
+                                            src={photoUrl}
+                                            alt={firstName}
+                                            className="w-32 h-32 rounded-full object-cover border-4 border-indigo-500 shadow-lg"
+                                            onError={(e) => {
+                                                e.target.src = "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e";
+                                            }}
+                                        />
+                                    </div>
+
+                                    <div className="flex-1 text-center md:text-left">
+                                        <h2 className="text-2xl font-bold text-white mb-1">{firstName + ' ' + lastName}</h2>
+                                        {age && gender && <p className="text-gray-300 mb-4">{gender[0].toUpperCase() + gender.slice(1)},{age} years old </p>
+                                        }
+                                        <div className="flex flex-wrap items-center justify-center md:justify-start gap-4">
+                                            <button
+
+                                                className='
+                                                   
+                                                     bg-indigo-600 hover:bg-indigo-700
+                                                     px-6 py-2 rounded-full flex items-center gap-2 text-white font-semibold transition-all duration-300 transform hover:scale-105'
+                                            >
+                                                <FaUserPlus />
+                                                Following
+                                            </button>
+                                            <button className="bg-gray-700 hover:bg-gray-800 px-6 py-2 rounded-full flex items-center gap-2 text-white font-semibold transition-all duration-300 transform hover:scale-105" onClick={() => handleClick(emailId)}>
+                                                <FaComments />
+                                                View Profile
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <div className="col-span-1 gap-2 py-2 ">
-
-                                    <p className="text-xl font-bold sm:ml-[-5rem]">{firstName + ' ' + lastName}</p>
-
-                                    {age && gender && <p className="text-gray-500  sm:ml-[-5rem]">
-                                        {age + ', ' + gender}
-                                    </p>}
-
-                                    <span className="flex items-center justify-start text-gray-500">
-                                        {/* <p>{about}</p> */}
-
-                                    </span>
-
-                                </div>
-                                <div className="col-span-1">
-
-                                    <button className="btn btn-secondary sm:ml-14" onClick={() => handleClick(emailId)}>View Profile</button>
-                                </div>
-
                             </div>
-
                         </div>
 
                     )

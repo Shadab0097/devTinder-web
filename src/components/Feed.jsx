@@ -17,6 +17,7 @@ const Feed = () => {
     const getFeed = async () => {
         try {
             const res = await axios.get(BASE_URL + "user/feed", { withCredentials: true })
+
             dispatch(addFeed(res.data))
 
         } catch (err) {
@@ -33,7 +34,7 @@ const Feed = () => {
 
     if (userFeed.length <= 0) return <h1 className="font-bold text-center text-3xl mt-28">No New User found</h1>
     return userFeed && (
-        <div className=" w-full mb-20 my-10  ">
+        <div className="h-screen w-full sm:mb-20 py-10  ">
             <UserCard user={userFeed[0]} />
         </div>
     )
