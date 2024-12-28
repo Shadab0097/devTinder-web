@@ -2,7 +2,7 @@ import axios from "axios"
 import { useEffect, useRef, useState } from "react"
 import { useDispatch } from "react-redux"
 import { addUser } from "../utils/userSlice"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { BASE_URL } from "../utils/constant"
 import GetStarted from "./GetStarted"
 import { FaCode, FaUsers, FaLaptopCode, FaEnvelope, FaLock } from "react-icons/fa";
@@ -22,8 +22,12 @@ const Login = () => {
     const [showToast, setShowToast] = useState(false)
     const toastTimerRef = useRef(null)
     const [otp, setOtp] = useState("")
+    const { token } = useParams();
+    const [redirecting, setRedirecting] = useState(false)
+    const [showOtpToast, setShowOtpToast] = useState(false)
+    // const [message, setMessage] = useState('')
 
-
+    let timer;
     const handleLogin = async () => {
         try {
             const response = await axios.post('http://localhost:2000/login', { emailId, password }, { withCredentials: true })
@@ -43,10 +47,25 @@ const Login = () => {
         try {
             const response = await axios.post('http://localhost:2000/signup', { firstName, lastName, emailId, password }, { withCredentials: true })
             // console.log(response)
-            dispatch(addUser(response.data.data))
-            navigate('/profile')
-            setError('')
+            // dispatch(addUser(response.data.data))
+            // navigate('/profile')
+            if (response.status === 200) {
+                setRedirecting(true)
+            }
+            if (toastTimerRef.current) {
+                clearInterval(toastTimerRef.current)
+            }
 
+            toastTimerRef.current = setTimeout(() => {
+                setRedirecting(false)
+                setIsLoginForm(true)
+                toastTimerRef.current = null
+            }, 3000)
+
+            // alert('Registration successful! Please check your email to verify your account.');
+
+            setError('')
+            setRedirecting(true)
         } catch (err) {
             setError(err?.response?.data)
             console.log(err)
@@ -58,6 +77,20 @@ const Login = () => {
         try {
 
             const res = await axios.post(BASE_URL + "profile/forgot/password", { emailId }, { withCredentials: true })
+            if (res.status === 200) {
+                setShowOtpToast(true)
+
+            }
+            if (toastTimerRef.current) {
+                clearInterval(toastTimerRef.current)
+            }
+
+            toastTimerRef.current = setTimeout(() => {
+
+                setShowOtpToast(false)
+                toastTimerRef.current = null
+            }, 2000)
+
             setError('')
 
             setGetOtp(true)
@@ -86,6 +119,7 @@ const Login = () => {
 
             toastTimerRef.current = setTimeout(() => {
                 setShowToast(false)
+
                 toastTimerRef.current = null
             }, 2000)
 
@@ -93,11 +127,30 @@ const Login = () => {
             setError(err.response.data)
         }
     }
+
+    // const verifyEmail = async () => {
+    //     try {
+    //         const response = await axios.get(BASE_URL + `verify-email/${token}`, { withCredentials: true });
+
+    //     } catch (err) {
+    //         // navigate('/login')
+    //         setRedirecting(false)
+    //         setError('')
+
+    //         // console.error(err);
+    //     }
+    // };
     useEffect(() => {
+
+
+        // verifyEmail();
+
         return () => {
             clearTimeout(toastTimerRef.current)
+            // clearTimeout(timer)
+
         }
-    }, [])
+    }, [token])
 
     return (
         <>
@@ -257,6 +310,17 @@ const Login = () => {
             {showToast && <div className="toast toast-top toast-center">
                 <div className="alert alert-success">
                     <span>Password Changed Successfully</span>
+                </div>
+            </div>}
+
+            {redirecting && <div className="toast toast-top toast-center">
+                <div className="alert alert-success">
+                    <span>Email verification code send Successfully</span>
+                </div>
+            </div>}
+            {showOtpToast && <div className="toast toast-top toast-center">
+                <div className="alert alert-success">
+                    <span>Otp sent Successfully on Registerd Email</span>
                 </div>
             </div>}
 
