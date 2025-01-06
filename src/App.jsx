@@ -11,6 +11,7 @@ import ConnectionProfileView from "./components/ConnectionProfileView"
 import GetStarted from "./components/GetStarted"
 import ErrorPage from "./components/ErrorPage"
 
+
 function App() {
 
 
@@ -27,6 +28,8 @@ function App() {
               <Route path="/connections" element={<Connections />} />
               <Route path="/requests" element={<Requests />} />
               <Route path="/connectionprofile" element={<ConnectionProfileView />} />
+              {/* <Route path="/chat" element={<Chat />} /> */}
+
 
             </Route>
             <Route path="*" element={<ErrorPage />} />

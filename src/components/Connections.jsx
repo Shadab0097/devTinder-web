@@ -7,11 +7,14 @@ import { addView } from "../utils/connectionProfileViewSlice"
 import { Navigate, useNavigate } from "react-router-dom"
 import { FaComments, FaUserPlus } from "react-icons/fa"
 
+
 const Connections = () => {
     const dispatch = useDispatch()
     const connections = useSelector(store => store.connections)
     const navigate = useNavigate()
-
+    // const [showChat, setShowChat] = useState(false)
+    // const [fromUser, setFromUser] = useState('')
+    // const [toUser, setToUser] = useState('')
 
     const getConnections = async () => {
         try {
@@ -19,10 +22,12 @@ const Connections = () => {
 
             dispatch(addConnections(res.data.data))
         } catch (err) {
-
+            console.log(err.message)
         }
 
     }
+
+
 
     useEffect(() => {
         getConnections()
@@ -47,6 +52,7 @@ const Connections = () => {
 
         <>
             <h1 className="text-center py-10 text-4xl">Connections</h1>
+
             <div className="mb-28">
                 {connections.map((connections, index) => {
                     const { _id, firstName, lastName, about, age, gender, photoUrl, emailId } = connections
@@ -87,6 +93,10 @@ const Connections = () => {
                                                 <FaComments />
                                                 View Profile
                                             </button>
+                                            <button className="bg-gray-700 hover:bg-gray-800 px-6 py-3 rounded-full flex items-center gap-2 text-white font-semibold transition-all duration-300 transform hover:scale-105"  >
+                                                <FaComments />
+                                                Message
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -96,6 +106,7 @@ const Connections = () => {
                     )
                 })}
             </div>
+
 
         </>
     )

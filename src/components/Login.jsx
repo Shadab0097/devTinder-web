@@ -6,10 +6,11 @@ import { useNavigate, useParams } from "react-router-dom"
 import { BASE_URL } from "../utils/constant"
 import GetStarted from "./GetStarted"
 import { FaCode, FaUsers, FaLaptopCode, FaEnvelope, FaLock } from "react-icons/fa";
+import Spinner from "./Spinner"
 
 const Login = () => {
-    const [emailId, setEmailId] = useState("rohit@2910.com")
-    const [password, setPassword] = useState("Rohit@123")
+    const [emailId, setEmailId] = useState("")
+    const [password, setPassword] = useState("")
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
     const [getOtp, setGetOtp] = useState(false)
@@ -21,13 +22,19 @@ const Login = () => {
     const [isForgot, setIsForgot] = useState(false)
     const [showToast, setShowToast] = useState(false)
     const toastTimerRef = useRef(null)
+    const timer = useRef(null)
+
     const [otp, setOtp] = useState("")
-    const { token } = useParams();
     const [redirecting, setRedirecting] = useState(false)
     const [showOtpToast, setShowOtpToast] = useState(false)
-    // const [message, setMessage] = useState('')
+    const [spinner, setSpinner] = useState(false)
+    const [hideForgotPass, setHideForgotPass] = useState(false)
+    const [otpSpinner, setOtpSpinner] = useState(false)
 
-    let timer;
+
+
+
+
     const handleLogin = async () => {
         try {
             const response = await axios.post('http://localhost:2000/login', { emailId, password }, { withCredentials: true })
@@ -37,6 +44,7 @@ const Login = () => {
             setError('')
 
         } catch (err) {
+            navigate('/login')
             setError(err?.response?.data)
             console.log(err)
 
@@ -44,13 +52,16 @@ const Login = () => {
     }
 
     const handleSignUp = async () => {
+        setSpinner(true)
         try {
             const response = await axios.post('http://localhost:2000/signup', { firstName, lastName, emailId, password }, { withCredentials: true })
             // console.log(response)
             // dispatch(addUser(response.data.data))
             // navigate('/profile')
+
             if (response.status === 200) {
                 setRedirecting(true)
+                setSpinner(false)
             }
             if (toastTimerRef.current) {
                 clearInterval(toastTimerRef.current)
@@ -59,6 +70,9 @@ const Login = () => {
             toastTimerRef.current = setTimeout(() => {
                 setRedirecting(false)
                 setIsLoginForm(true)
+                // setHideForgotPass(true)
+                setSpinner(false)
+
                 toastTimerRef.current = null
             }, 3000)
 
@@ -67,6 +81,7 @@ const Login = () => {
             setError('')
             setRedirecting(true)
         } catch (err) {
+            setSpinner(false)
             setError(err?.response?.data)
             console.log(err)
 
@@ -74,11 +89,13 @@ const Login = () => {
     }
 
     const handleForgotPassword = async () => {
+        setOtpSpinner(true)
         try {
 
             const res = await axios.post(BASE_URL + "profile/forgot/password", { emailId }, { withCredentials: true })
             if (res.status === 200) {
                 setShowOtpToast(true)
+                setOtpSpinner(false)
 
             }
             if (toastTimerRef.current) {
@@ -94,6 +111,7 @@ const Login = () => {
             setError('')
 
             setGetOtp(true)
+            setHideForgotPass(true)
 
         } catch (err) {
             setError(err.response.data)
@@ -101,6 +119,7 @@ const Login = () => {
     }
 
     const verifyOtp = async () => {
+        setOtpSpinner(true)
         try {
 
 
@@ -111,6 +130,8 @@ const Login = () => {
                 setIsForgot(false)
                 setShowToast(true)
                 setGetOtp(false)
+                setHideForgotPass(false)
+                setOtpSpinner(false)
 
             }
             if (toastTimerRef.current) {
@@ -128,18 +149,20 @@ const Login = () => {
         }
     }
 
-    // const verifyEmail = async () => {
-    //     try {
-    //         const response = await axios.get(BASE_URL + `verify-email/${token}`, { withCredentials: true });
+    const showForgotPassword = () => {
+        setIsForgot(!isForgot)
+        setError('')
+    }
 
-    //     } catch (err) {
-    //         // navigate('/login')
-    //         setRedirecting(false)
-    //         setError('')
+    if (timer.current) {
+        clearInterval(timer.current)
+    }
 
-    //         // console.error(err);
-    //     }
-    // };
+    timer.current = setTimeout(() => {
+        setError('')
+    }, 3000)
+
+
     useEffect(() => {
 
 
@@ -147,10 +170,12 @@ const Login = () => {
 
         return () => {
             clearTimeout(toastTimerRef.current)
+            clearTimeout(timer.current)
+
             // clearTimeout(timer)
 
         }
-    }, [token])
+    }, [])
 
     return (
         <>
@@ -271,12 +296,12 @@ const Login = () => {
                                         </div>
                                     </>
                                 }
-                                <div>
+                                {otpSpinner ? <Spinner /> : <div>
                                     <p className="text-red-500">{error}</p>
-                                    {isloginForm && <p className="text-blue-600 hover:underline font-semibold items-end mt-2 cursor-pointer" onClick={() => { setIsForgot(!isForgot), setError('') }}>
-                                        Forgot your password?
+                                    {isloginForm && <p className="text-blue-600 hover:underline font-semibold items-end mt-2 cursor-pointer" onClick={hideForgotPass ? handleForgotPassword : showForgotPassword}>
+                                        {hideForgotPass ? 'resend OTP' : 'Forgot your password?'}
                                     </p>}
-                                </div>
+                                </div>}
 
                                 {
                                     isForgot ?
@@ -288,13 +313,14 @@ const Login = () => {
                                             {getOtp ? 'Reset Password' : 'Get Otp'}
                                         </button> :
 
-                                        <button
+                                        spinner ? <Spinner /> : <button
                                             type="submit"
                                             className="w-full py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-lg text-lg transition-transform duration-200 hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                                             onClick={isloginForm ? handleLogin : handleSignUp}
                                         >
                                             {isloginForm ? 'Login' : 'SignUp'}
                                         </button>
+
                                 }
 
                                 {!isForgot && <p className="text-center font-bold cursor-pointer" onClick={() => setIsLoginForm(!isloginForm)}>{isloginForm ? 'New User? Sign Up Here' : 'Existing User? LogIn Here'} </p>}
@@ -331,72 +357,3 @@ const Login = () => {
 
 
 export default Login
-// <div className="flex h-screen justify-between">
-//     <div className="sm:block hidden">
-//         <GetStarted />
-//     </div>
-//     <div className="">
-//         {/* <div className=" card bg-base-300 w-96 shadow-xl m-auto mt-2  mb-20 items-center "> */}
-//
-//     </div>
-// </div>
-
-
-
-
-//  <div className="md:w-1/2 bg-gradient-to-br from-indigo-50 to-purple-50 p-8 rounded-xl">
-//                         <div className="max-w-md mx-auto">
-//                             <div className="card-body card bg-base-300 w-96 shadow-xl  mt-2  items-center">
-//                                 {isForgot ? <h2 className="card-title justify-center">Forgot Password</h2> :
-//                                     <h2 className="card-title justify-center">{isloginForm ? 'Login' : 'sign Up'}</h2>}
-
-
-
-//                                 {!isloginForm &&
-//                                     <>
-//                                         <label className="form-control w-full max-w-xs">
-//                                             <div className="label">
-//                                                 <span className="label-text">First Name</span>
-//                                             </div>
-//                                             <input value={firstName} type="text" placeholder="Type here" className="input input-bordered w-full max-w-lg" onChange={(e) => setFirstName(e.target.value)} />
-//                                         </label>
-//                                         <label className="form-control w-full max-w-xs">
-//                                             <div className="label">
-//                                                 <span className="label-text">Last Name</span>
-//                                             </div>
-//                                             <input value={lastName} type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" onChange={(e) => setLastName(e.target.value)} />
-//                                         </label>
-//                                     </>
-//                                 }
-
-
-
-//                                 <label className="form-control w-full max-w-xs">
-//                                     <div className="label">
-//                                         <span className="label-text">Email</span>
-//                                     </div>
-//                                     <input value={emailId} type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" onChange={(e) => setEmailId(e.target.value)} />
-//                                 </label>
-//                                 <label className="form-control w-full max-w-xs">
-//                                     <div className="label">
-//                                         <span className="label-text">Password</span>
-//                                     </div>
-//                                     <input value={password} type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" onChange={(e) => setPassword(e.target.value)} />
-//                                 </label>
-//                                 <p className="text-red-500">{error}</p>
-//                                 {isloginForm && <p className="text-blue-600 hover:underline font-semibold items-end mt-2 cursor-pointer" onClick={() => { setIsForgot(!isForgot), setError('') }}>
-//                                     Forgot your password?
-//                                 </p>}
-//                                 {
-//                                     isForgot ?
-//                                         <div className="card-actions justify-center my-2">
-//                                             <button className="btn w-72 btn-primary" onClick={handleForgotPassword}>Change Password</button>
-//                                         </div> :
-//                                         <div className="card-actions justify-center my-2">
-//                                             <button className="btn w-72 btn-primary" onClick={isloginForm ? handleLogin : handleSignUp}>{isloginForm ? 'Login' : 'SignUp'}</button>
-//                                         </div>}
-//                                 {!isForgot && <p className="text-center font-bold cursor-pointer" onClick={() => setIsLoginForm(!isloginForm)}>{isloginForm ? 'New User? Sign Up Here' : 'Existing User? LogIn Here'} </p>}
-//                             </div>
-
-//                         </div>
-//                      </div>
