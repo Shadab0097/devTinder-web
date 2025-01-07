@@ -37,7 +37,7 @@ const Login = () => {
 
     const handleLogin = async () => {
         try {
-            const response = await axios.post('http://localhost:2000/login', { emailId, password }, { withCredentials: true })
+            const response = await axios.post(BASE_URL + 'login', { emailId, password }, { withCredentials: true })
             // console.log(response)
             dispatch(addUser(response.data))
             navigate('/')
@@ -54,7 +54,7 @@ const Login = () => {
     const handleSignUp = async () => {
         setSpinner(true)
         try {
-            const response = await axios.post('http://localhost:2000/signup', { firstName, lastName, emailId, password }, { withCredentials: true })
+            const response = await axios.post(BASE_URL + 'signup', { firstName, lastName, emailId, password }, { withCredentials: true })
             // console.log(response)
             // dispatch(addUser(response.data.data))
             // navigate('/profile')
