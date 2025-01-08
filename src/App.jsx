@@ -10,6 +10,7 @@ import Requests from "./components/Requests"
 import ConnectionProfileView from "./components/ConnectionProfileView"
 import GetStarted from "./components/GetStarted"
 import ErrorPage from "./components/ErrorPage"
+import VerifyEmail from "./components/VerifyEmail"
 
 
 function App() {
@@ -28,6 +29,8 @@ function App() {
               <Route path="/connections" element={<Connections />} />
               <Route path="/requests" element={<Requests />} />
               <Route path="/connectionprofile" element={<ConnectionProfileView />} />
+              <Route path="/verify-email" element={<VerifyEmail />} />
+
               {/* <Route path="/chat" element={<Chat />} /> */}
 
 
