@@ -1,27 +1,30 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BASE_URL } from '../utils/constant';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 
 
 const VerifyEmail = () => {
+    let timer
     const navigate = useNavigate()
     const { token } = useParams()
+    //   const [error, setError] = useState()
+
     const verifyEmail = async () => {
         try {
             const response = await axios.get(BASE_URL + `verify-email/${token}`, {}, { withCredentials: true });
-            setMessage('Email verified successfully!');
+            // setMessage('Email verified successfully!');
 
 
 
         } catch (err) {
-            setMessage('Verification failed. Please try again.');
-            setTimeout(() => {
+            // setMessage('Verification failed. Please try again.');
+            timer = setTimeout(() => {
                 navigate('/login')
             }, 3000)
-            setError('')
+            // setError('')
 
-            setRedirecting(false)
+            // setRedirecting(false)
 
             console.error(err);
         }
