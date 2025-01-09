@@ -8,7 +8,7 @@ import Feed from "./components/Feed"
 import Connections from "./components/Connections"
 import Requests from "./components/Requests"
 import ConnectionProfileView from "./components/ConnectionProfileView"
-import GetStarted from "./components/GetStarted"
+// import GetStarted from "./components/GetStarted"
 import ErrorPage from "./components/ErrorPage"
 import VerifyEmail from "./components/VerifyEmail"
 
@@ -29,7 +29,7 @@ function App() {
               <Route path="/connections" element={<Connections />} />
               <Route path="/requests" element={<Requests />} />
               <Route path="/connectionprofile" element={<ConnectionProfileView />} />
-              {/* <Route path="/verify-email/:token" element={<VerifyEmail />} /> */}
+              <Route path="/verify-email/:token" element={<VerifyEmail />} />
 
               {/* <Route path="/chat" element={<Chat />} /> */}
 
