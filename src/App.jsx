@@ -29,7 +29,7 @@ function App() {
               <Route path="/connections" element={<Connections />} />
               <Route path="/requests" element={<Requests />} />
               <Route path="/connectionprofile" element={<ConnectionProfileView />} />
-              <Route path="/api/verify-email/:token" element={<VerifyEmail />} />
+              <Route path="/verify-email/:token" element={<VerifyEmail />} />
 
               {/* <Route path="/chat" element={<Chat />} /> */}
 
