@@ -13,7 +13,7 @@ const VerifyEmail = () => {
 
     const verifyEmail = async () => {
         try {
-            const response = await axios.get(BASE_URL + `/verify-email/${token}`, { withCredentials: true });
+            const response = await axios.get(`${BASE_URL}/verify-email/${token}`, { withCredentials: true });
             // setMessage('Email verified successfully!');
             console.log(response)
             if (verifyTimer.current) {
@@ -44,7 +44,10 @@ const VerifyEmail = () => {
 
         return () => {
             // clearTimeout(toastTimerRef.current)
-            clearTimeout(verifyTimer.current)
+            if (verifyTimer.current) {
+
+                clearTimeout(verifyTimer.current)
+            }
 
         }
     }, [token])
