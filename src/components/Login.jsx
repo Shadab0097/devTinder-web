@@ -179,7 +179,7 @@ const Login = () => {
 
     return (
         <>
-            <div className="min-h-screen bg-gradient-to-br from-base-50 to-base-100 flex items-center justify-center p-4 sm:mb-20 mb-24">
+            <div className="min-h-screen bg-gradient-to-br from-base-50 to-base-100 flex items-center justify-center p-4 sm:mb-44 mb-40">
                 <div className="max-w-6xl w-full bg-gradient-to-r from-cyan-100 to-slate-400 rounded-2xl shadow-xl p-8 md:p-12 flex flex-col md:flex-row gap-8">
                     {/* Left Section - Welcome Content */}
                     <div className="md:w-1/2 text-center">
