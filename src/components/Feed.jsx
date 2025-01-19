@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { addFeed } from "../utils/feedSlice"
 import { useEffect } from "react"
 import UserCard from "./UserCard"
+import ShimmerUi from "./ShimmerUi"
 
 
 
@@ -30,7 +31,7 @@ const Feed = () => {
     useEffect(() => {
         getFeed()
     }, [])
-    if (!userFeed) return
+    if (!userFeed) return <ShimmerUi />
 
     if (userFeed.length <= 0) return <h1 className="font-bold text-center text-3xl mt-28">No New User found</h1>
     return userFeed && (

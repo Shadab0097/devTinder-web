@@ -6,6 +6,7 @@ import { addConnections } from "../utils/connectionSlice"
 import { addView } from "../utils/connectionProfileViewSlice"
 import { Navigate, useNavigate } from "react-router-dom"
 import { FaComments, FaUserPlus } from "react-icons/fa"
+import ShimmerUi from "./ShimmerUi"
 
 
 const Connections = () => {
@@ -35,7 +36,7 @@ const Connections = () => {
 
 
 
-    if (!connections) return
+    if (!connections) return <ShimmerUi />
 
     if (connections.length === 0) return <h1 className="text-center my-10 text-3xl font-bold">No Connections</h1>
 
@@ -53,7 +54,7 @@ const Connections = () => {
         <>
             <h1 className="text-center py-10 text-4xl">Connections</h1>
 
-            <div className="mb-28">
+            <div className="mb-48">
                 {connections.map((connections, index) => {
                     const { _id, firstName, lastName, about, age, gender, photoUrl, emailId } = connections
 

@@ -39,7 +39,7 @@ const EditProfile = ({ userProfile }) => {
 
     return userProfile && (
         <div className="w-full mt-12">
-            <div className="flex  flex-wrap-reverse mb-20  ">
+            <div className="flex  flex-wrap-reverse mb-48  ">
 
 
                 {/* <div className="bg-base-300 my-2 rounded-2xl mx-5 "> */}
