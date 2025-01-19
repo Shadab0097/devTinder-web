@@ -11,6 +11,11 @@ import ConnectionProfileView from "./components/ConnectionProfileView"
 // import GetStarted from "./components/GetStarted"
 import ErrorPage from "./components/ErrorPage"
 import VerifyEmail from "./components/VerifyEmail"
+import PrivacyPolicy from "./components/PrivacyPolicy"
+import TermsOfService from "./components/TermOfService"
+import RefundPolicy from "./components/RefundPolicy"
+import ContactUs from "./components/ContactUs"
+import AboutUs from "./components/AboutUs"
 
 
 function App() {
@@ -30,6 +35,15 @@ function App() {
               <Route path="/requests" element={<Requests />} />
               <Route path="/connectionprofile" element={<ConnectionProfileView />} />
               <Route path="/verify-email/:token" element={<VerifyEmail />} />
+              <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+              <Route path="/termofservice" element={<TermsOfService />} />
+              <Route path="/refundpolicy" element={<RefundPolicy />} />
+              <Route path="/contactus" element={<ContactUs />} />
+              <Route path="/aboutus" element={<AboutUs />} />
+
+
+
+
 
               {/* <Route path="/chat" element={<Chat />} /> */}
 
