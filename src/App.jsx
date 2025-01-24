@@ -16,6 +16,7 @@ import TermsOfService from "./components/TermOfService"
 import RefundPolicy from "./components/RefundPolicy"
 import ContactUs from "./components/ContactUs"
 import AboutUs from "./components/AboutUs"
+import Subscription from "./components/Subscription"
 
 
 function App() {
@@ -40,6 +41,8 @@ function App() {
               <Route path="/refundpolicy" element={<RefundPolicy />} />
               <Route path="/contactus" element={<ContactUs />} />
               <Route path="/aboutus" element={<AboutUs />} />
+              <Route path="/subscription" element={<Subscription />} />
+
 
 
 

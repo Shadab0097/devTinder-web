@@ -114,15 +114,15 @@ const Login = () => {
             setHideForgotPass(true)
 
         } catch (err) {
+            setOtpSpinner(false)
             setError(err.response.data)
+            console.log(err.message)
         }
     }
 
     const verifyOtp = async () => {
         setOtpSpinner(true)
         try {
-
-
             const res = await axios.post(BASE_URL + "profile/otp/verify", { emailId, otp, password }, { withCredentials: true })
 
             if (res.status === 200) {
@@ -134,6 +134,7 @@ const Login = () => {
                 setOtpSpinner(false)
 
             }
+
             if (toastTimerRef.current) {
                 clearInterval(toastTimerRef.current)
             }
@@ -145,7 +146,9 @@ const Login = () => {
             }, 2000)
 
         } catch (err) {
+            setOtpSpinner(false)
             setError(err.response.data)
+            console.log(err.message)
         }
     }
 

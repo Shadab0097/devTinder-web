@@ -35,7 +35,7 @@ const Feed = () => {
 
     if (userFeed.length <= 0) return <h1 className="font-bold text-center text-3xl mt-28">No New User found</h1>
     return userFeed && (
-        <div className="h-screen w-full sm:mb-20 py-10  ">
+        <div className="h-screen w-full sm:mb-48 py-10  ">
             <UserCard user={userFeed[0]} />
         </div>
     )
