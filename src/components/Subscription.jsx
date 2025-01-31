@@ -13,7 +13,7 @@ const Subscription = () => {
             </div>
             <p className="mx-auto mt-6 max-w-2xl text-center text-lg font-medium text-pretty  sm:text-xl/8">Choose an affordable plan that’s packed with the best features for engaging with different People, Building Connection, and Collabrating with People.</p>
             <div className="mx-auto mt-16 grid max-w-lg grid-cols-1 items-center gap-y-6 sm:mt-20 sm:gap-y-0 lg:max-w-4xl lg:grid-cols-2">
-                <div className="rounded-3xl rounded-tl-3xl bg-white/80 p-8 ring-1 ring-gray-900/10 sm:mx-8 sm:rounded-b-none sm:p-10 lg:mx-0 lg:rounded-tr-none lg:rounded-bl-3xl">
+                <div className="rounded-3xl rounded-tl-3xl bg-white/90 p-8 ring-1 ring-gray-900/10 sm:mx-8 sm:rounded-b-none sm:p-10 lg:mx-0 lg:rounded-tr-none lg:rounded-bl-3xl">
                     <h3 id="tier-hobby" className="text-base/7 font-semibold text-indigo-600">Silver</h3>
                     <p className="mt-4 flex items-baseline gap-x-2">
                         <span className="text-5xl font-semibold tracking-tight text-gray-900">₹ 400</span>
