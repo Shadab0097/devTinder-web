@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { BASE_URL } from '../utils/constant'
 import axios from 'axios';
+import Spinner from './Spinner';
+import PremiumUser from './PremiumUser';
 
 const Subscription = () => {
     const [isUserPremium, setIsUserPremium] = useState(false)
+    const [showSpinner, setShowSpinner] = useState(false)
+
+
 
     useEffect(() => {
         verifyPremiumUser()
@@ -18,34 +23,43 @@ const Subscription = () => {
     }
 
     const handleBuyClick = async (type) => {
-        const order = await axios.post(BASE_URL + "payment/create", {
-            membershipType: type,
+        setShowSpinner(true)
+        try {
+            const order = await axios.post(BASE_URL + "payment/create", {
+                membershipType: type,
 
-        }, { withCredentials: true });
-        const { amount, keyId, currency, notes, orderId } = order.data
-        const options = {
-            key: keyId, // Replace with your Razorpay key_id
-            amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-            currency,
-            name: 'Dev Tinder',
-            description: 'Connect with other developers',
-            order_id: orderId, // This is the order_id created in the backend
-            // callback_url: 'http://localhost:3000/payment-success', // Your success URL
-            prefill: {
-                name: notes.firstName + " " + notes.lastName,
-                email: notes.emailId,
-                contact: '9999999999'
-            },
-            theme: {
-                color: '#F37254'
-            },
-            handler: verifyPremiumUser
-        };
+            }, { withCredentials: true });
 
-        const rzp = new window.Razorpay(options);
-        rzp.open();
+            if (order.status === 200) {
+                setShowSpinner(false)
+            }
+            const { amount, keyId, currency, notes, orderId } = order.data
+            const options = {
+                key: keyId, // Replace with your Razorpay key_id
+                amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                currency,
+                name: 'Dev Tinder',
+                description: 'Connect with other developers',
+                order_id: orderId, // This is the order_id created in the backend
+                // callback_url: 'http://localhost:3000/payment-success', // Your success URL
+                prefill: {
+                    name: notes.firstName + " " + notes.lastName,
+                    email: notes.emailId,
+                    contact: '9999999999'
+                },
+                theme: {
+                    color: '#F37254'
+                },
+                handler: verifyPremiumUser
+            };
+
+            const rzp = new window.Razorpay(options);
+            rzp.open();
+        } catch (err) {
+            setShowSpinner(false)
+        }
     }
-    return isUserPremium ? (<h1>you are Premium User</h1>) : (
+    return isUserPremium ? (<PremiumUser />) : (
 
         <div className="relative isolate bg-base-100 px-6 py-24 sm:py-32 lg:px-8 mb-48">
             <div className="absolute inset-x-0 -top-3 -z-10 transform-gpu overflow-hidden px-36 blur-3xl" aria-hidden="true">
@@ -90,7 +104,7 @@ const Subscription = () => {
                             3 Months
                         </li>
                     </ul>
-                    <button onClick={() => handleBuyClick("silver")} aria-describedby="tier-hobby" className="mt-8 block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-indigo-600 ring-1 ring-indigo-200 ring-inset hover:ring-indigo-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:mt-10">Buy Silver</button>
+                    <button onClick={() => handleBuyClick("silver")} aria-describedby="tier-hobby" className="mt-8 block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-indigo-600 ring-1 ring-indigo-200 ring-inset hover:ring-indigo-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:mt-10">{showSpinner ? <Spinner /> : "Buy Silver"}</button>
                 </div>
                 <div className="relative rounded-3xl bg-gray-900 p-8 ring-1 shadow-2xl ring-gray-900/10 sm:p-10">
                     <h3 id="tier-enterprise" className="text-base/7 font-semibold text-indigo-400">Gold</h3>
@@ -137,7 +151,7 @@ const Subscription = () => {
                             6 Months
                         </li>
                     </ul>
-                    <button onClick={() => handleBuyClick("gold")} aria-describedby="tier-enterprise" className="mt-8 block rounded-md bg-indigo-500 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 sm:mt-10">Buy Gold</button>
+                    <button onClick={() => handleBuyClick("gold")} aria-describedby="tier-enterprise" className="mt-8 block rounded-md bg-indigo-500 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 sm:mt-10">{showSpinner ? <Spinner /> : "Buy Gold"}</button>
                 </div>
             </div>
         </div>
