@@ -1,6 +1,36 @@
 import React from 'react'
+import { BASE_URL } from '../utils/constant'
+import axios from 'axios';
 
 const Subscription = () => {
+
+    const handleBuyClick = async (type) => {
+        const order = await axios.post(BASE_URL + "payment/create", {
+            membershipType: type,
+
+        }, { withCredentials: true });
+        const { amount, keyId, currency, notes, orderId } = order.data
+        const options = {
+            key: keyId, // Replace with your Razorpay key_id
+            amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            currency,
+            name: 'Dev Tinder',
+            description: 'Connect with other developers',
+            order_id: orderId, // This is the order_id created in the backend
+            // callback_url: 'http://localhost:3000/payment-success', // Your success URL
+            prefill: {
+                name: notes.firstName + " " + notes.lastName,
+                email: notes.emailId,
+                contact: '9999999999'
+            },
+            theme: {
+                color: '#F37254'
+            },
+        };
+
+        const rzp = new window.Razorpay(options);
+        rzp.open();
+    }
     return (
 
         <div className="relative isolate bg-base-100 px-6 py-24 sm:py-32 lg:px-8 mb-48">
@@ -17,7 +47,7 @@ const Subscription = () => {
                     <h3 id="tier-hobby" className="text-base/7 font-semibold text-indigo-600">Silver</h3>
                     <p className="mt-4 flex items-baseline gap-x-2">
                         <span className="text-5xl font-semibold tracking-tight text-gray-900">₹ 400</span>
-                        <span className="text-base text-gray-500"> /4 month</span>
+                        <span className="text-base text-gray-500"> /3 month</span>
                     </p>
                     <p className="mt-6 text-base/7 text-gray-600">Silver Membership</p>
                     <ul role="list" className="mt-8 space-y-3 text-sm/6 text-gray-600 sm:mt-10">
@@ -46,7 +76,7 @@ const Subscription = () => {
                             3 Months
                         </li>
                     </ul>
-                    <a href="#" aria-describedby="tier-hobby" className="mt-8 block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-indigo-600 ring-1 ring-indigo-200 ring-inset hover:ring-indigo-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:mt-10">Buy Silver</a>
+                    <button onClick={() => handleBuyClick("silver")} aria-describedby="tier-hobby" className="mt-8 block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold text-indigo-600 ring-1 ring-indigo-200 ring-inset hover:ring-indigo-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:mt-10">Buy Silver</button>
                 </div>
                 <div className="relative rounded-3xl bg-gray-900 p-8 ring-1 shadow-2xl ring-gray-900/10 sm:p-10">
                     <h3 id="tier-enterprise" className="text-base/7 font-semibold text-indigo-400">Gold</h3>
@@ -93,7 +123,7 @@ const Subscription = () => {
                             6 Months
                         </li>
                     </ul>
-                    <a href="#" aria-describedby="tier-enterprise" className="mt-8 block rounded-md bg-indigo-500 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 sm:mt-10">Buy Gold</a>
+                    <button onClick={() => handleBuyClick("gold")} aria-describedby="tier-enterprise" className="mt-8 block rounded-md bg-indigo-500 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 sm:mt-10">Buy Gold</button>
                 </div>
             </div>
         </div>
