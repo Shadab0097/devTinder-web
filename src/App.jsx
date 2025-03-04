@@ -17,6 +17,7 @@ import RefundPolicy from "./components/RefundPolicy"
 import ContactUs from "./components/ContactUs"
 import AboutUs from "./components/AboutUs"
 import Subscription from "./components/Subscription"
+import Chat from "./components/Chat"
 
 
 function App() {
@@ -42,11 +43,7 @@ function App() {
               <Route path="/contactus" element={<ContactUs />} />
               <Route path="/aboutus" element={<AboutUs />} />
               <Route path="/subscription" element={<Subscription />} />
-
-
-
-
-
+              <Route path="/chat/:targetUserId" element={<Chat />} />
 
               {/* <Route path="/chat" element={<Chat />} /> */}
 

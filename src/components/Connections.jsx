@@ -4,22 +4,27 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { addConnections } from "../utils/connectionSlice"
 import { addView } from "../utils/connectionProfileViewSlice"
-import { Navigate, useNavigate } from "react-router-dom"
+import { Link, Navigate, useNavigate } from "react-router-dom"
 import { FaComments, FaUserPlus } from "react-icons/fa"
 import ShimmerUi from "./ShimmerUi"
+
 
 
 const Connections = () => {
     const dispatch = useDispatch()
     const connections = useSelector(store => store.connections)
+    console.log(connections)
+    const loggedInUser = useSelector(store => store.user)
+    // if (!loggedInUser) return null
+    // console.log(loggedInUser.isPremium)
+
     const navigate = useNavigate()
-    // const [showChat, setShowChat] = useState(false)
-    // const [fromUser, setFromUser] = useState('')
-    // const [toUser, setToUser] = useState('')
+
 
     const getConnections = async () => {
         try {
             const res = await axios.get(BASE_URL + "user/connections", { withCredentials: true })
+            console.log(res)
 
             dispatch(addConnections(res.data.data))
         } catch (err) {
@@ -56,7 +61,7 @@ const Connections = () => {
 
             <div className="mb-48">
                 {connections.map((connections, index) => {
-                    const { _id, firstName, lastName, about, age, gender, photoUrl, emailId } = connections
+                    const { _id, firstName, lastName, about, age, gender, photoUrl, emailId, isPremium } = connections
 
                     return (
 
@@ -94,10 +99,11 @@ const Connections = () => {
                                                 <FaComments />
                                                 View Profile
                                             </button>
-                                            <button className="bg-gray-700 hover:bg-gray-800 px-6 py-3 rounded-full flex items-center gap-2 text-white font-semibold transition-all duration-300 transform hover:scale-105"  >
+                                            {loggedInUser.isPremium && <Link to={connections.isPremium ? "/chat/" + _id : "/connections"} > <button className="bg-gray-700 hover:bg-gray-800 px-6 py-3 rounded-full flex items-center gap-2 text-white font-semibold transition-all duration-300 transform hover:scale-105"  >
                                                 <FaComments />
-                                                Message
-                                            </button>
+                                                {connections.isPremium ? "Message" : "Not a Premium"}
+                                            </button> </Link>}
+
                                         </div>
                                     </div>
                                 </div>

@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from "react-router-dom"
+import { Outlet, useLocation, useNavigate, matchPath } from "react-router-dom"
 import NavBar from "./NavBar"
 import Footer from "./Footer"
 import axios from "axios"
@@ -12,6 +12,8 @@ const Body = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const loggedInUser = useSelector(store => store.user)
+    const location = useLocation()
+    const isChatRoute = matchPath("/chat/:targetUserId", location.pathname);
 
     const fetchUserData = async () => {
         if (loggedInUser) return
@@ -45,7 +47,7 @@ const Body = () => {
             <NavBar />
 
             <Outlet />
-            <Footer />
+            {!isChatRoute && <Footer />} {/* Show Footer if not on the chat route */}
         </div>
     )
 }
