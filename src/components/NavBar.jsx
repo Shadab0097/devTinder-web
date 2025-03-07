@@ -28,7 +28,7 @@ const NavBar = () => {
                 </div>
                 {user && <div className="flex-none gap-2 ">
                     <div className="form-control flex flex-row items-center">
-                        <p className="px-4">{user.firstName}</p> {user.isPremium && <span><PremiumBadge /></span>}
+                        {user.isPremium ? <span><PremiumBadge name={user.firstName} /></span> : <p className="px-4">{user.firstName}</p>}
                     </div>
                     <div className="dropdown dropdown-end">
                         <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">

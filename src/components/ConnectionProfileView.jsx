@@ -36,7 +36,7 @@ const ConnectionProfileView = () => {
 
     return (
 
-        <div className="container mx-auto px-4 py-16 relative ">
+        <div className="container mx-auto px-4 py-16 relative mb-56">
             <div className="max-w-4xl mx-auto bg-base-300   rounded-2xl overflow-hidden shadow-2xl">
                 <div className="p-8 flex flex-col md:flex-row items-center gap-8">
                     <div className="relative">
