@@ -79,11 +79,14 @@ const Connections = () => {
                                                 e.target.src = "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e";
                                             }}
                                         />
+                                        {connections.isOnline && <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-green-500 px-4 py-1 rounded-full text-white text-sm">
+                                            Active Now
+                                        </div>}
                                     </div>
 
 
                                     <div className="flex-1 text-center md:text-left">
-                                        <h2 className="text-2xl font-bold text-white mb-1 flex">{firstName + ' ' + lastName} {connections.isOnline && <span class="flex w-3 h-3 me-3 bg-teal-500 rounded-full"></span>}</h2>
+                                        <h2 className="text-2xl font-bold text-white mb-1">{firstName + ' ' + lastName} </h2>
                                         {age && gender && <p className="text-gray-300 mb-4">{gender[0].toUpperCase() + gender.slice(1)},{age} years old </p>
                                         }
                                         <div className="flex flex-wrap items-center justify-center md:justify-start gap-4">
