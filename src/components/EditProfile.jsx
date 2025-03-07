@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux"
 import { addUser } from "../utils/userSlice"
 import axios from "axios"
 import { BASE_URL } from "../utils/constant"
+import Spinner from "./Spinner"
 // import { SiNasa } from "react-icons/si"
 
 
@@ -19,12 +20,11 @@ const EditProfile = ({ userProfile }) => {
     const [error, setError] = useState()
     const [showToast, setShowToast] = useState(false)
     const dispatch = useDispatch()
+    const [updateSpinner, setUpdateSpinner] = useState(false)
 
 
     const saveProfile = async () => {
-
-
-
+        setUpdateSpinner(true)
         setError('')
         try {
 
@@ -54,6 +54,7 @@ const EditProfile = ({ userProfile }) => {
         } catch (err) {
             console.log(err)
             setError(err.response.data)
+            setUpdateSpinner(false)
         }
 
     }
@@ -105,7 +106,7 @@ const EditProfile = ({ userProfile }) => {
                     </div>
                     <p className="text-red-500">{error}</p>
                     <div className="card-actions justify-center my-6">
-                        <button className="btn btn-primary" onClick={saveProfile} >Save Profile</button>
+                        <button className="btn btn-primary" onClick={saveProfile} >{updateSpinner ? <Spinner /> : 'Save Profile'}</button>
                     </div>
 
                 </div>
