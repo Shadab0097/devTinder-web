@@ -10,32 +10,47 @@ const Chat = () => {
     const user = useSelector((store) => store.user)
     const userId = user?._id
 
+
     const [messages, setMessages] = useState([
     ]);
     // const [timeStamp, setTimeStamp] = useState()
     const [lastSeen, setLastSeen] = useState()
+    const [targetUserName, setTargetUserName] = useState()
 
 
     const fetchChatMesaages = async () => {
-        const chat = await axios.get(BASE_URL + "chat/" + targetUserId,
-            { withCredentials: true, })
-        // console.log(chat)
+        try {
+            const chat = await axios.get(BASE_URL + "chat/" + targetUserId,
+                { withCredentials: true, })
+            // console.log(chat)
 
 
-        const chatMessages = chat?.data?.messages.map((msg) => {
-            return {
-                firstName: msg.senderId.firstName,
-                lastName: msg.senderId.lastName,
+            const chatMessages = chat?.data?.messages.map((msg) => {
+                return {
+                    firstName: msg.senderId.firstName,
+                    lastName: msg.senderId.lastName,
 
-                text: msg.text,
-                time: new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            }
-        });
-        setMessages(chatMessages)
+                    text: msg.text,
+                    time: new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                }
+            });
+            setMessages(chatMessages)
 
-        setLastSeen(chat?.data?.messages[chat.data.messages.length - 1]?.updatedAt)
+            setLastSeen(chat?.data?.messages[chat.data.messages.length - 1]?.updatedAt)
+        } catch (err) {
+            console.log(err)
+        }
     }
 
+    const getTargetUser = async () => {
+        try {
+            const targetUser = await axios.get(BASE_URL + "user/" + targetUserId, { withCredentials: true, })
+            console.log(targetUser)
+            setTargetUserName(targetUser?.data)
+        } catch (err) {
+            console.log(err)
+        }
+    }
     function timeAgo(lastSeen) {
         const now = new Date();
         const diffInMs = now - new Date(lastSeen); // Time difference in milliseconds
@@ -55,9 +70,12 @@ const Chat = () => {
     useEffect(() => {
         fetchChatMesaages()
 
+
     }, [])
 
     useEffect(() => {
+        getTargetUser()
+
         if (!userId) return;
         const socket = createSocketConnection()
         socket.emit("joinChat", { firstName: user.firstName, lastName: user.lastName, userId, targetUserId });
@@ -66,10 +84,10 @@ const Chat = () => {
 
             setMessages((messages) => [...messages, { firstName, lastName, text }])
         })
-
         return () => {
             socket.disconnect()
         }
+
     }, [userId, targetUserId])
     const [newMessage, setNewMessage] = useState('');
 
@@ -90,11 +108,19 @@ const Chat = () => {
         //     setNewMessage('');
         // }
     };
+    // if (!targetConnection || !Array.isArray(targetConnection)) {
+    //     console.error("targetConnection is either null, undefined, or not an array", targetConnection);
+    //     return;  // Return early if targetConnection is not a valid array
+    // }
+    // if (!targetConnection) return null
+
+
+
     return (
         <div className="flex flex-col sm:h-[80vh] h-[100vh] bg-gray-100 sm:mt-10  sm:w-[40rem] m-auto">
             {/* Chat Header */}
             <div className="bg-white shadow px-4 py-3">
-                <h1 className="text-xl font-semibold">Chat {<span className=' text-xs' >({timeAgo(lastSeen)})</span>}</h1>
+                <h1 className="text-xl font-semibold">{targetUserName?.firstName} {targetUserName?.lastName}  <span className=' text-xs' >( {timeAgo(lastSeen)})</span></h1>
             </div>
 
             {/* Messages Container */}

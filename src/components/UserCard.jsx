@@ -12,6 +12,8 @@ const UserCard = ({ user }) => {
 
     const { _id, firstName, lastName, gender, age, about, skills, photoUrl } = user
     const dispatch = useDispatch()
+    // console.log(photoUrl)
+    //  const blobPhotoUrl = URL.createObjectURL(photoUrl)
 
     const handleRequest = async (status, userId) => {
         setNotify(status)
@@ -55,7 +57,7 @@ const UserCard = ({ user }) => {
             <div className="card card-compact bg-base-300 w-96 shadow-xl m-auto ">
                 <figure className="">
                     <img
-                        src={photoUrl}
+                        src={BASE_URL + "images/" + photoUrl}
                         alt="photo"
                         className="rounded-xl border-b-4 border-cyan-100 w-full h-72 object-cover hover:scale-105 transition-transform duration-300" />
                 </figure>

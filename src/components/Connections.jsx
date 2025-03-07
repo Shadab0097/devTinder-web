@@ -13,6 +13,7 @@ import ShimmerUi from "./ShimmerUi"
 const Connections = () => {
     const dispatch = useDispatch()
     const connections = useSelector(store => store.connections)
+
     console.log(connections)
     const loggedInUser = useSelector(store => store.user)
     // if (!loggedInUser) return null
@@ -24,7 +25,7 @@ const Connections = () => {
     const getConnections = async () => {
         try {
             const res = await axios.get(BASE_URL + "user/connections", { withCredentials: true })
-            console.log(res)
+            // console.log(res)
 
             dispatch(addConnections(res.data.data))
         } catch (err) {
@@ -61,7 +62,7 @@ const Connections = () => {
 
             <div className="mb-48">
                 {connections.map((connections, index) => {
-                    const { _id, firstName, lastName, about, age, gender, photoUrl, emailId, isPremium } = connections
+                    const { _id, firstName, lastName, about, age, gender, photoUrl, emailId, isPremium, isOnline } = connections
 
                     return (
 
@@ -69,9 +70,9 @@ const Connections = () => {
                         <div key={_id} className="container mx-auto px-4 py-8 relative ">
                             <div className="max-w-4xl mx-auto bg-base-300  backdrop-blur-lg rounded-2xl overflow-hidden shadow-2xl">
                                 <div className="p-6 flex flex-col md:flex-row items-center gap-6">
-                                    <div className="relative">
+                                    <div className="relative ">
                                         <img
-                                            src={photoUrl}
+                                            src={BASE_URL + "images/" + photoUrl}
                                             alt={firstName}
                                             className="w-32 h-32 rounded-full object-cover border-4 border-indigo-500 shadow-lg"
                                             onError={(e) => {
@@ -80,8 +81,9 @@ const Connections = () => {
                                         />
                                     </div>
 
+
                                     <div className="flex-1 text-center md:text-left">
-                                        <h2 className="text-2xl font-bold text-white mb-1">{firstName + ' ' + lastName}</h2>
+                                        <h2 className="text-2xl font-bold text-white mb-1 flex">{firstName + ' ' + lastName} {connections.isOnline && <span class="flex w-3 h-3 me-3 bg-teal-500 rounded-full"></span>}</h2>
                                         {age && gender && <p className="text-gray-300 mb-4">{gender[0].toUpperCase() + gender.slice(1)},{age} years old </p>
                                         }
                                         <div className="flex flex-wrap items-center justify-center md:justify-start gap-4">

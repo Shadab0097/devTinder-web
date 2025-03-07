@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux"
 import { addUser } from "../utils/userSlice"
 import axios from "axios"
 import { BASE_URL } from "../utils/constant"
+// import { SiNasa } from "react-icons/si"
 
 
 const EditProfile = ({ userProfile }) => {
@@ -21,15 +22,35 @@ const EditProfile = ({ userProfile }) => {
 
 
     const saveProfile = async () => {
+
+
+
         setError('')
         try {
-            const res = await axios.patch(BASE_URL + "profile/edit", { firstName, lastName, photoUrl, age, gender, about, skills }, { withCredentials: true })
+
+            const formData = new FormData()
+            formData.append('firstName', firstName);
+            formData.append('lastName', lastName);
+            formData.append('age', age);
+            formData.append('gender', gender);
+            formData.append('about', about);
+            formData.append('skills', skills);
+
+            if (photoUrl instanceof File) {
+                formData.append('file', photoUrl);
+            }
+
+
+
+            const res = await axios.patch(BASE_URL + "profile/edit", formData, { withCredentials: true, headers: { "Content-Type": "multipart/form-data" } })
             dispatch(addUser(res?.data?.data))
             setShowToast(true)
             setTimeout(() => {
                 setShowToast(false)
 
             }, 3000)
+
+
         } catch (err) {
             console.log(err)
             setError(err.response.data)
@@ -57,8 +78,8 @@ const EditProfile = ({ userProfile }) => {
                         </div>
                         <div className="w-full">
                             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Photo Url</label>
-                            <input value={photoUrl} type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" onChange={(e) => setPhotoUrl(e.target.value)} />
-                            {/* <input type="file" className="file-input file-input-bordered w-full max-w-xs" onChange={(e) => setPhotoUrl(e.target.value)} /> */}
+                            {/* <input value={photoUrl} type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" onChange={(e) => setPhotoUrl(e.target.value)} /> */}
+                            <input type="file" className="file-input file-input-bordered w-full max-w-xs" onChange={(e) => setPhotoUrl(e.target.files[0])} />
                         </div>
                         <div className="w-full">
                             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Age</label>
@@ -111,62 +132,3 @@ export default EditProfile
 
 
 
-// {/* <div className="card bg-base-300 w-96 shadow-xl  m-auto my-2 mx-5 ">
-// <div className="card-body">
-//     <h2 className="card-title justify-center">Edit Profile</h2>
-//     <label className="form-control w-full max-w-xs">
-//         <div className="label">
-//             <span className="label-text">First Name</span>
-//         </div>
-//         <input value={firstName} type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" onChange={(e) => setFirstName(e.target.value)} />
-//     </label>
-//     <label className="form-control w-full max-w-xs">
-//         <div className="label">
-//             <span className="label-text">Last Name</span>
-//         </div>
-//         <input value={lastName} type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" onChange={(e) => setLastName(e.target.value)} />
-//     </label>
-//     <label className="form-control w-full max-w-xs">
-//         <div className="label">
-//             <span className="label-text">PhotoUrl</span>
-//         </div>
-//         <input value={photoUrl} type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" onChange={(e) => setPhotoUrl(e.target.value)} />
-//         {/* <input type="file" className="file-input file-input-bordered w-full max-w-xs" onChange={(e) => setPhotoUrl(e.target.value)} /> */}
-//     </label>
-//     <label className="form-control w-full max-w-xs">
-//         <div className="label">
-//             <span className="label-text">Age</span>
-//         </div>
-//         <input value={age} type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" onChange={(e) => setAge(e.target.value)} />
-
-//     </label>
-//     <label className="form-control w-full max-w-xs">
-//         <div className="label">
-//             <span className="label-text">Gender</span>
-//         </div>
-//         <select value={gender} className="select select-bordered w-full max-w-xs" onChange={(e) => setGender(e.target.value)}>
-//             {/* <option value="" disabled>Select gender</option> */}
-//             <option value="male">Male</option>
-//             <option value="female">Female</option>
-//             <option value="Other">Other</option>
-//         </select>
-//     </label>
-//     <label className="form-control w-full max-w-xs">
-//         <div className="label">
-//             <span className="label-text">About</span>
-//         </div>
-//         {/* <input value={about} type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" onChange={(e) => setAbout(e.target.value)} /> */}
-//         <textarea className="textarea textarea-bordered" placeholder="..." onChange={(e) => setAbout(e.target.value)}></textarea>
-//     </label>
-//     <label className="form-control w-full max-w-xs">
-//         <div className="label">
-//             <span className="label-text">Skills</span>
-//         </div>
-//         <input value={skills} type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" onChange={(e) => setSkills(e.target.value)} />
-//     </label>
-//     <p className="text-red-500">{error}</p>
-//     <div className="card-actions justify-center my-2">
-//         <button className="btn btn-primary" onClick={saveProfile} >Save Profile</button>
-//     </div>
-// </div>
-// </div> */}

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { Link, useNavigate } from "react-router-dom"
 import { BASE_URL } from "../utils/constant"
 import { removeUser } from "../utils/userSlice"
+import { PremiumBadge } from './PremiumBadge';
 
 const NavBar = () => {
     const user = useSelector(store => store.user)
@@ -27,14 +28,14 @@ const NavBar = () => {
                 </div>
                 {user && <div className="flex-none gap-2 ">
                     <div className="form-control flex flex-row items-center">
-                        <p className="px-4">{user.firstName}</p>
+                        <p className="px-4">{user.firstName}</p> {user.isPremium && <span><PremiumBadge /></span>}
                     </div>
                     <div className="dropdown dropdown-end">
                         <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                             <div className="w-10 rounded-full">
                                 <img
                                     alt="Tailwind CSS Navbar component"
-                                    src={user.photoUrl} />
+                                    src={BASE_URL + "images/" + user.photoUrl} />
                             </div>
                         </div>
                         <ul
