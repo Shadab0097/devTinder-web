@@ -43,6 +43,9 @@ const EditProfile = ({ userProfile }) => {
 
 
             const res = await axios.patch(BASE_URL + "profile/edit", formData, { withCredentials: true, headers: { "Content-Type": "multipart/form-data" } })
+            if (res.status === 200) {
+                setUpdateSpinner(false)
+            }
             dispatch(addUser(res?.data?.data))
             setShowToast(true)
             setTimeout(() => {
